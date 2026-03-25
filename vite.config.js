@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'; // triggering reload
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   server: {

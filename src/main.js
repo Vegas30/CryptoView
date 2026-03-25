@@ -3,7 +3,6 @@
  * Orchestrates all components and manages state
  */
 
-console.log('[MAIN.JS] Parsing started');
 import './index.css';
 import { fetchPairs, fetchCandles, getSymbolForExchange } from './api/exchanges.js';
 import { WebSocketManager } from './api/websocket.js';
@@ -41,15 +40,12 @@ class App {
     this.chartLoading = document.getElementById('chart-loading');
 
     // Init
-    console.log('[App] Constructor finished, calling _init()');
     this._init();
   }
 
   async _init() {
-    console.log('[App] _init() called, exchange:', this.exchange);
     // Load pairs for default exchange
     await this._loadPairs(this.exchange);
-    console.log('[App] _loadPairs() finished');
 
     // Load chart for default pair
     this.currentSymbol = getSymbolForExchange(this.exchange, this.currentPair.base, this.currentPair.quote);
