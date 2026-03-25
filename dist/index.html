@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoView — Свечные графики криптовалют</title>
+  <meta name="description" content="Просмотр свечных графиков криптовалют с бирж Binance и OKX в реальном времени" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script type="module" crossorigin src="/assets/index-CFamq_qy.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-lvlhGbq2.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          <span class="logo-text">CryptoView</span>
+        </div>
+      </div>
+
+      <div class="sidebar-tabs">
+        <button class="sidebar-tab active" data-tab="watchlist" id="tab-watchlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          Watchlist
+        </button>
+        <button class="sidebar-tab" data-tab="all-pairs" id="tab-all-pairs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+          </svg>
+          Все пары
+        </button>
+      </div>
+
+      <div class="sidebar-search">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="search-input" placeholder="Поиск пары..." autocomplete="off" />
+      </div>
+
+      <div class="sidebar-filters" id="quote-filters">
+        <button class="filter-btn active" data-quote="USDT">USDT</button>
+        <button class="filter-btn" data-quote="BTC">BTC</button>
+        <button class="filter-btn" data-quote="ETH">ETH</button>
+        <button class="filter-btn" data-quote="BNB">BNB</button>
+      </div>
+
+      <div class="pairs-list" id="pairs-list">
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+          <span>Загрузка пар...</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main id="main-content" class="main-content">
+      <!-- Header -->
+      <header id="chart-header" class="chart-header">
+        <div class="header-left">
+          <button id="sidebar-toggle" class="sidebar-toggle" title="Скрыть/показать панель">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="pair-info">
+            <h1 id="current-pair" class="current-pair">BTC/USDT</h1>
+            <span id="current-exchange-badge" class="exchange-badge">Binance</span>
+          </div>
+          <div class="price-info">
+            <span id="current-price" class="current-price">—</span>
+            <span id="price-change" class="price-change neutral">0.00%</span>
+          </div>
+        </div>
+        <div class="header-center">
+          <div class="timeframe-buttons" id="timeframe-buttons">
+            <button class="tf-btn" data-tf="1m">1м</button>
+            <button class="tf-btn" data-tf="5m">5м</button>
+            <button class="tf-btn" data-tf="15m">15м</button>
+            <button class="tf-btn active" data-tf="1h">1ч</button>
+            <button class="tf-btn" data-tf="4h">4ч</button>
+            <button class="tf-btn" data-tf="1d">1Д</button>
+            <button class="tf-btn" data-tf="1w">1Н</button>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="exchange-switcher" id="exchange-switcher">
+            <button class="exchange-btn active" data-exchange="binance">
+              <span class="exchange-dot binance-dot"></span>
+              Binance
+            </button>
+            <button class="exchange-btn" data-exchange="okx">
+              <span class="exchange-dot okx-dot"></span>
+              OKX
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- OHLCV Info bar -->
+      <div id="ohlcv-bar" class="ohlcv-bar">
+        <div class="ohlcv-item"><span class="ohlcv-label">O</span><span id="ohlcv-open" class="ohlcv-value">—</span></div>
+        <div class="ohlcv-item"><span class="ohlcv-label">H</span><span id="ohlcv-high" class="ohlcv-value">—</span></div>
+        <div class="ohlcv-item"><span class="ohlcv-label">L</span><span id="ohlcv-low" class="ohlcv-value">—</span></div>
+        <div class="ohlcv-item"><span class="ohlcv-label">C</span><span id="ohlcv-close" class="ohlcv-value">—</span></div>
+        <div class="ohlcv-item"><span class="ohlcv-label">Vol</span><span id="ohlcv-vol" class="ohlcv-value">—</span></div>
+      </div>
+
+      <!-- Chart container -->
+      <div id="chart-container" class="chart-container">
+        <div class="chart-loading" id="chart-loading">
+          <div class="spinner large"></div>
+          <span>Загрузка графика...</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
